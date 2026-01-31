@@ -1,0 +1,8 @@
+/build
+/coverage-report
+/coverage.info
+/coverage.filtered.info
+*.o
+*.obj
+*.gcda
+*.gcno

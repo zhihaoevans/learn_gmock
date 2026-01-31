@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-coverage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (lcov, genhtml)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
+      - name: Configure (CMake) with coverage flags
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DENABLE_COVERAGE=ON
+
+      - name: Build
+        run: cmake --build build --config Debug -- -j
+
+      - name: Run tests
+        run: |
+          ctest --test-dir build --output-on-failure
+
+      - name: Capture coverage (lcov)
+        run: |
+          lcov --directory build --zerocounters || true
+          lcov --directory build --capture --output-file coverage.info
+
+      - name: Filter coverage (remove system and external libs)
+        run: |
+          lcov --remove coverage.info "/usr/*" "*/_deps/*" "*/googletest/*" "*/gmock/*" --output-file coverage.filtered.info
+          lcov --summary coverage.filtered.info
+
+      - name: Generate HTML report
+        run: |
+          mkdir -p coverage-report
+          genhtml coverage.filtered.info --output-directory coverage-report
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.filtered.info
+          # token: ${{ secrets.CODECOV_TOKEN }}
