@@ -5,6 +5,7 @@ This repository demonstrates:
 - Unit tests using Google Test / Google Mock.
 - GitHub Actions workflow that builds, runs tests and collects coverage (lcov + genhtml).
 - CMake-based build using FetchContent to bring googletest/gmock.
+- Compile commands generation for IDE/editor integration.
 
 How to build and run locally:
 
