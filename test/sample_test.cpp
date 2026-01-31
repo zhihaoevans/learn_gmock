@@ -33,3 +33,15 @@ TEST(ProcessorTest, ProcessValue_DoNegative) {
   int res = p.ProcessValue(7);
   EXPECT_EQ(res, -1);
 }
+
+TEST(ProcessorTest, ProcessValue_NoOkInOutput) {
+  auto mock = std::make_shared<MockFoo>();
+  Processor p(mock);
+
+  EXPECT_CALL(*mock, Do(5)).WillOnce(Return(10));
+  EXPECT_CALL(*mock, Out(10, _))
+      .WillOnce(DoAll(SetArgPointee<1>(std::string("error:failed")), Return()));
+
+  int res = p.ProcessValue(5);
+  EXPECT_EQ(res, 10);
+}
