@@ -1,5 +1,4 @@
 #include "mylib.h"
-#include <algorithm>
 
 int Processor::ProcessValue(int v) {
   int r = foo_->Do(v);
