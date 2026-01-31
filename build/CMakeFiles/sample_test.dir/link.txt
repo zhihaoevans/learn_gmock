@@ -1,0 +1,1 @@
+/usr/bin/c++ -g --coverage -Wl,--dependency-file=CMakeFiles/sample_test.dir/link.d CMakeFiles/sample_test.dir/test/sample_test.cpp.o -o sample_test  libmylib.a lib/libgmock_main.a lib/libgmock.a lib/libgtest.a
