@@ -59,4 +59,4 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           files: coverage.filtered.info
-          # token: ${{ secrets.CODECOV_TOKEN }}
+          # token: ${{ secrets.CODECOV_TOKEN }}  # Uncomment and add secret for private repos
