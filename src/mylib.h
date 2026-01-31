@@ -13,7 +13,7 @@ struct IFoo {
   
   /// Outputs a string based on the input value
   /// @param in Input value
-  /// @param out Output string pointer (caller must provide valid pointer)
+  /// @param out Output string that will be populated by this method
   virtual void Out(int in, std::string* out) = 0;
 };
 
@@ -21,7 +21,7 @@ struct IFoo {
 class Processor {
  public:
   /// Constructs a Processor with the given IFoo implementation
-  /// @param foo Shared pointer to IFoo implementation (caller must provide valid pointer)
+  /// @param foo Shared pointer to IFoo implementation
   explicit Processor(std::shared_ptr<IFoo> foo) : foo_(std::move(foo)) {}
   
   /// Processes a value through the IFoo interface
